@@ -4,7 +4,7 @@
 
 using namespace std;
 
-const int arrSize = 5;
+const int arrSize = 3;
 
 void generate2DArray(const int& size, int  static2DArr[arrSize][arrSize]);
 void outputArray(const int& size, int  static2DArr[arrSize][arrSize]);
@@ -53,7 +53,8 @@ void outputArray(const int& size, int  static2DArr[arrSize][arrSize])
 	{
 		for (int j = 0; j < size; j++)
 		{
-			cout << static2DArr[i][j] << "\t";
+			cout << *(*(static2DArr + i) + j) << "\t";
+			//cout << static2DArr[i][j] << "\t";
 		}
 
 		cout << endl;
@@ -66,7 +67,8 @@ void generate2DArray(const int& size, int  static2DArr[arrSize][arrSize])
 	{
 		for (int j = 0; j < size; j++)
 		{
-			static2DArr[i][j] = rand() % 20;
+			//static2DArr[i][j] = rand() % 20;
+			*(*(static2DArr + i) + j) = rand() % 20;
 		}
 	}
 }
@@ -77,8 +79,10 @@ void swapAndGetLeftMinRightMax(int arr[][arrSize], int arraySize, int& leftMin, 
 	int iMax = 0, jMax = 1;
 
 
-	leftMin = arr[1][0];
-	rightMax = arr[0][1];
+	leftMin = *(*(arr + 1) + 0);
+	rightMax = *(*(arr + 0) + 1);
+	//leftMin = arr[1][0];
+	//rightMax = arr[0][1];
 
 	for (int i = 0; i < arraySize; i++)
 	{
@@ -86,18 +90,20 @@ void swapAndGetLeftMinRightMax(int arr[][arrSize], int arraySize, int& leftMin, 
 		{
 			if (i > j)
 			{
-				if (leftMin > arr[i][j])
+				if (leftMin > /*arr[i][j]*/ *(*(arr + i) + j))
 				{
-					leftMin = arr[i][j];
+					//leftMin = arr[i][j];
+					leftMin = *(*(arr + i) + j);
 					iMin = i;
 					jMin = j;
 				}
 			}
 			else if (j > i)
 			{
-				if (rightMax < arr[i][j])
+				if (rightMax < /*arr[i][j]*/ *(*(arr + i) + j))
 				{
-					rightMax = arr[i][j];
+					//rightMax = arr[i][j];
+					rightMax = *(*(arr + i) + j);
 					iMax = i;
 					jMax = j;
 				}
@@ -105,9 +111,13 @@ void swapAndGetLeftMinRightMax(int arr[][arrSize], int arraySize, int& leftMin, 
 		}
 	}
 
-	int temp = arr[iMin][jMin];
+	/*int temp = arr[iMin][jMin];
 	arr[iMin][jMin] = arr[iMax][jMax];
-	arr[iMax][jMax] = temp;
+	arr[iMax][jMax] = temp;*/
+
+	int temp = *(*(arr + iMin) + jMin);
+	*(*(arr + iMin) + jMin) = *(*(arr + iMax) + jMax);
+	*(*(arr + iMax) + jMax) = temp;
 }
 
 float averageValue(int a, int b)
