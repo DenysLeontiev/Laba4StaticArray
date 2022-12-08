@@ -4,17 +4,22 @@
 
 using namespace std;
 
-const int arrSize = 3;
+const int arrSize = 50;
+int actualSize = 0;
 
 void generate2DArray(const int& size, int  static2DArr[arrSize][arrSize]);
 void outputArray(const int& size, int  static2DArr[arrSize][arrSize]);
-//int getLeftMinimal(int** arr, int arraySize);
-//int getRightMaximum(int** arr, int arraySize);
 void swapAndGetLeftMinRightMax(int arr[][arrSize], int arraySize, int& leftMin, int& rightMax);
 float averageValue(int a, int b);
+int setValue(const char v[]);
 
 void main()
 {
+	do
+	{
+		actualSize = setValue("actualSize");
+	} while (actualSize > arrSize || actualSize <= 1);
+
 	srand(time(NULL)); // NULL == 0
 
 	int static2DArr[arrSize][arrSize];
@@ -49,9 +54,9 @@ void main()
 
 void outputArray(const int& size, int  static2DArr[arrSize][arrSize])
 {
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < actualSize; i++)
 	{
-		for (int j = 0; j < size; j++)
+		for (int j = 0; j < actualSize; j++)
 		{
 			cout << *(*(static2DArr + i) + j) << "\t";
 			//cout << static2DArr[i][j] << "\t";
@@ -63,9 +68,9 @@ void outputArray(const int& size, int  static2DArr[arrSize][arrSize])
 
 void generate2DArray(const int& size, int  static2DArr[arrSize][arrSize])
 {
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < actualSize; i++)
 	{
-		for (int j = 0; j < size; j++)
+		for (int j = 0; j < actualSize; j++)
 		{
 			//static2DArr[i][j] = rand() % 20;
 			*(*(static2DArr + i) + j) = rand() % 20;
@@ -84,9 +89,9 @@ void swapAndGetLeftMinRightMax(int arr[][arrSize], int arraySize, int& leftMin, 
 	//leftMin = arr[1][0];
 	//rightMax = arr[0][1];
 
-	for (int i = 0; i < arraySize; i++)
+	for (int i = 0; i < actualSize; i++)
 	{
-		for (int j = 0; j < arraySize; j++)
+		for (int j = 0; j < actualSize; j++)
 		{
 			if (i > j)
 			{
@@ -125,43 +130,24 @@ float averageValue(int a, int b)
 	return (float)(a + b) / 2;
 }
 
-//int getLeftMinimal(int** arr, int arraySize)
-//{
-//	int leftMin = arr[1][0];
-//	for (int i = 0; i < arraySize; i++)
-//	{
-//		for (int j = 0; j < arraySize; j++)
-//		{
-//			if (i > j)
-//			{
-//				if (leftMin > arr[i][j])
-//				{
-//					leftMin = arr[i][j];
-//				}
-//			}
-//		}
-//	}
-//
-//	return leftMin;
-//}
-//
-//int getRightMaximum(int** arr, int arraySize)
-//{
-//	int rightMax = arr[0][1];
-//	for (int i = 0; i < arraySize; i++)
-//	{
-//		for (int j = 0; j < arraySize; j++)
-//		{
-//			if (j > i)
-//			{
-//				if (rightMax < arr[i][j])
-//				{
-//					rightMax = arr[i][j];
-//				}
-//			}
-//		}
-//	}
-//
-//	return rightMax;
-//}
+int setValue(const char v[])
+{
+	int error;
+	int value;
+	do
+	{
+		error = 0;
+		cout << "Please enter " << v << " = ";
+		cin >> value;
+		if (cin.fail())
+		{
+			cout.clear();
+			cout << "Please enter a valid number" << endl;
+			error = 1;
+			cin.clear();
+			cin.ignore(80, '\n');
+		}
+	} while (error == 1);
 
+	return value;
+}
