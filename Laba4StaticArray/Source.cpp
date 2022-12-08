@@ -4,36 +4,36 @@
 
 using namespace std;
 
-const int arrSize = 50;
-int actualSize = 0;
+const int arrSize = 5;
 
-void generate2DArray(const int& size, int  static2DArr[arrSize][arrSize]);
-void outputArray(const int& size, int  static2DArr[arrSize][arrSize]);
+void generate2DArray(int, int [][arrSize]);
+void outputArray(int size, int  static2DArr[arrSize][arrSize]);
 void swapAndGetLeftMinRightMax(int arr[][arrSize], int arraySize, int& leftMin, int& rightMax);
 float averageValue(int a, int b);
 int setValue(const char v[]);
 
-void main()
+int main()
 {
+	int actualSize = 0;
 	do
 	{
 		actualSize = setValue("actualSize");
 	} while (actualSize > arrSize || actualSize <= 1);
 
-	srand(time(NULL)); // NULL == 0
+	srand((unsigned)time(NULL)); // NULL == 0
 
 	int static2DArr[arrSize][arrSize];
-	generate2DArray(arrSize, static2DArr);
+	generate2DArray(actualSize, static2DArr);
 
 	cout << "Before Swap" << endl;
 	cout << endl;
-	outputArray(arrSize, static2DArr);
+	outputArray(actualSize, static2DArr);
 	cout << endl;
 
 	int leftMin;
 	int rightMax;
 
-	swapAndGetLeftMinRightMax(static2DArr, arrSize, leftMin, rightMax);
+	swapAndGetLeftMinRightMax(static2DArr, actualSize, leftMin, rightMax);
 
 	cout << "leftMin = " << leftMin << endl;
 	cout << "rightMax = " << rightMax << endl;
@@ -42,7 +42,7 @@ void main()
 	cout << "After Swap" << endl;
 	cout << endl;
 
-	outputArray(arrSize, static2DArr);
+	outputArray(actualSize, static2DArr);
 	cout << endl;
 
 	double averageValue = (double)(leftMin + rightMax) / 2;
@@ -50,11 +50,12 @@ void main()
 	cout << endl;
 
 	system("pause");
+	return 0;
 }
 
-void outputArray(const int& size, int  static2DArr[arrSize][arrSize])
+void outputArray(int actualSize, int  static2DArr[arrSize][arrSize])
 {
-	for (int i = 0; i < actualSize; i++)
+	for (int i = 0; i < actualSize;i++)
 	{
 		for (int j = 0; j < actualSize; j++)
 		{
@@ -66,11 +67,11 @@ void outputArray(const int& size, int  static2DArr[arrSize][arrSize])
 	}
 }
 
-void generate2DArray(const int& size, int  static2DArr[arrSize][arrSize])
+void generate2DArray(int size, int  static2DArr[][arrSize])
 {
-	for (int i = 0; i < actualSize; i++)
+	for (int i = 0; i < size; i++)
 	{
-		for (int j = 0; j < actualSize; j++)
+		for (int j = 0; j < size; j++)
 		{
 			//static2DArr[i][j] = rand() % 20;
 			*(*(static2DArr + i) + j) = rand() % 20;
@@ -78,7 +79,7 @@ void generate2DArray(const int& size, int  static2DArr[arrSize][arrSize])
 	}
 }
 
-void swapAndGetLeftMinRightMax(int arr[][arrSize], int arraySize, int& leftMin, int& rightMax)
+void swapAndGetLeftMinRightMax(int arr[][arrSize], int actualSize, int& leftMin, int& rightMax)
 {
 	int iMin = 1, jMin = 0;
 	int iMax = 0, jMax = 1;
@@ -91,28 +92,40 @@ void swapAndGetLeftMinRightMax(int arr[][arrSize], int arraySize, int& leftMin, 
 
 	for (int i = 0; i < actualSize; i++)
 	{
-		for (int j = 0; j < actualSize; j++)
+		for (int j = i + 1; j < actualSize; j++)
 		{
-			if (i > j)
+			if (arr[i][j] > rightMax)
 			{
-				if (leftMin > /*arr[i][j]*/ *(*(arr + i) + j))
-				{
-					//leftMin = arr[i][j];
-					leftMin = *(*(arr + i) + j);
-					iMin = i;
-					jMin = j;
-				}
+				iMax = i;
+				jMax = j;
+				rightMax = arr[i][j];
 			}
-			else if (j > i)
+			if (arr[j][i] < leftMin)
 			{
-				if (rightMax < /*arr[i][j]*/ *(*(arr + i) + j))
-				{
-					//rightMax = arr[i][j];
-					rightMax = *(*(arr + i) + j);
-					iMax = i;
-					jMax = j;
-				}
+				leftMin = arr[j][i];
+				iMin = j;
+				jMin = i;
 			}
+			//if (i > j)
+			//{
+			//	if (leftMin > /*arr[i][j]*/ *(*(arr + i) + j))
+			//	{
+			//		//leftMin = arr[i][j];
+			//		leftMin = *(*(arr + i) + j);
+			//		iMin = i;
+			//		jMin = j;
+			//	}
+			//}
+			//else if (j > i)
+			//{
+			//	if (rightMax < /*arr[i][j]*/ *(*(arr + i) + j))
+			//	{
+			//		//rightMax = arr[i][j];
+			//		rightMax = *(*(arr + i) + j);
+			//		iMax = i;
+			//		jMax = j;
+			//	}
+			//}
 		}
 	}
 
